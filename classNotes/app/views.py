@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .forms import UploadFileForm
 from .processFile import STT
 from django.http import HttpResponse
+from .models import AudioFile
 
 
 # Imaginary function to handle an uploaded file.
@@ -14,8 +15,9 @@ def Home(request):
 def UploadFile(request):
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
-        form = request.FILES['file']
-        text = STT(request.FILES["file"]) # procesarConIA()
+        file = request.FILES['file']
+        audio = AudioFile.objects.create(file=file)
+        text = STT(str(audio.file)) # procesarConIA()
         return HttpResponse(text)
     else:
         form = UploadFileForm()
