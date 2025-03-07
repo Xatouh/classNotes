@@ -55,4 +55,3 @@ def STT(audio_file):
 
     return result
 
-STT("./input/audio_transcrito.m4a")

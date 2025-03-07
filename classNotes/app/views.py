@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import UploadFileForm
-
+from .processFile import STT
 from django.http import HttpResponse
 
 
@@ -15,8 +15,8 @@ def UploadFile(request):
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         form = request.FILES['file']
-        # procesarConIA(request.FILES["file"])
-        return HttpResponse(str(form))
+        text = STT(request.FILES["file"]) # procesarConIA()
+        return HttpResponse(text)
     else:
         form = UploadFileForm()
        
