@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import UploadFileForm
-from .processFile import STT
+from .processFile import run_buzz_command as STT
 from django.http import HttpResponse
 from .models import AudioFile
 

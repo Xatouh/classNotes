@@ -51,3 +51,39 @@ def STT(audio_file):
     print(result)
     return result
 
+def run_buzz_command(audio_file):
+    # Command exactly as you would type it in the terminal
+    command_str = f"QT_QPA_PLATFORM=offscreen python -m buzz add -t transcribe -l es -m whisper -s small -p \"Transcribe este audio de una clase de informática, el nombre de la clase es métodos numéricos y es una clase introductoria\" --txt {audio_file}"
+    
+    # Execute directly as you would in terminal, with shell=True
+    process = subprocess.Popen(
+        command_str,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        preexec_fn=os.setsid  # Use a new process group
+    )
+    
+    try:
+        # Wait for the command to complete
+        stdout, stderr = process.communicate(timeout=1200)  # 20 minutes timeout
+        
+        # Check if there's an output file that was created
+        # You might need to add logic here to find and read the output file
+        
+        return {
+            "returncode": process.returncode,
+            "stdout": stdout,
+            "stderr": stderr,
+            "success": process.returncode == 0
+        }
+    except subprocess.TimeoutExpired:
+        # Kill the process group if it times out
+        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
+        return {
+            "returncode": -1,
+            "stdout": "",
+            "stderr": "Process timed out",
+            "success": False
+        }
