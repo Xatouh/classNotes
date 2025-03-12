@@ -3,6 +3,7 @@ from openai import OpenAI
 import subprocess
 import os
 import time
+import signal
 
 def obtenerResumen(message):
     client = OpenAI(api_key='')
@@ -20,11 +21,12 @@ def obtenerResumen(message):
     return completion.choices[0].message.content
 
 def run_buzz_command(audio_file):
-    # Command exactly as you would type it in the terminal
     
+    locate_buzz() #DEBUG: Saber que version de buzz se utiliza 
+
     command_str = f"QT_QPA_PLATFORM=offscreen python -m buzz add -t transcribe -l es -m whisper -s large-v3-turbo -p \"Transcribe este audio de una clase de informática, el nombre de la clase es métodos numéricos y es una clase introductoria\" --txt {audio_file}"
     print("Executing command:", command_str)
-    # Execute directly as you would in terminal, with shell=True
+    
     process = subprocess.Popen(
         command_str,
         shell=True,
@@ -79,3 +81,17 @@ def STT(audio_file):
         print("Error:", result["stderr"])
     
     return result
+
+
+def locate_buzz():
+    command_str = f"QT_QPA_PLATFORM=offscreen python -m buzz add -t transcribe -l es -m whisper -s large-v3-turbo -p \"Transcribe este audio de una clase de informática, el nombre de la clase es métodos numéricos y es una clase introductoria\" --txt {audio_file}"
+    print("Executing command:", command_str)
+    # Execute directly as you would in terminal, with shell=True
+    process = subprocess.Popen(
+        command_str,
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    print(process)
