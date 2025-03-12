@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import UploadFileForm
-from .processFile import run_buzz_command as STT
+from .processFile import STT
 from django.http import HttpResponse
 from .models import AudioFile
 
@@ -13,12 +13,15 @@ def Home(request):
     return render(request, "home/home.html")
 
 def UploadFile(request):
+    folder = "input/"
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         file = request.FILES['file']
         audio = AudioFile.objects.create(file=file)
-        text = STT(str(audio.file)) # procesarConIA()
-        return HttpResponse(text)
+	fileTitle = audio.file
+        text = STT(str(folder + audio.file)) # procesarConIA()
+        transcription = fileTitle + "_transcription"
+	return HttpResponse(text['stderr'])
     else:
         form = UploadFileForm()
        

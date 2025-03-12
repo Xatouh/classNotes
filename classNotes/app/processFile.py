@@ -2,7 +2,7 @@ import buzz.transcriber
 from openai import OpenAI
 import subprocess
 import os
-
+import time
 
 def obtenerResumen(message):
     client = OpenAI(api_key='')
@@ -19,42 +19,11 @@ def obtenerResumen(message):
     )
     return completion.choices[0].message.content
 
-def STT(audio_file):
-    my_env = os.environ.copy()
-    my_env["QT_QPA_PLATFORM"] = "offscreen"
-
-    route = "/home/xatou/projects/classNotes/src/Github/classNotes/classNotes/" + audio_file
-    command = [
-	"QT_QPA_PLATFORM=offscreen","/snap/bin/buzz", "add", 
-        "-t", "transcribe", 
-        "-l", "es", 
-        "-m", "whisper", 
-        "-s", "small", 
-        "-p", "Transcribe este audio de una clase de informática, el nombre de la clase es métodos numéricos y es una clase introductoria",
-        "--txt", 
-        route
-    ]
-
-    # Set environment variables
-    
-    print("executing:", " ".join(command))
-    # Execute the command
-    result = subprocess.run(
-        " ".join(command),
-	shell=True,
-	env=my_env,
-	capture_output=True,
-	
-    )
-    
-    # Check if command was successful
-    print(result)
-    return result
-
 def run_buzz_command(audio_file):
     # Command exactly as you would type it in the terminal
-    command_str = f"QT_QPA_PLATFORM=offscreen python -m buzz add -t transcribe -l es -m whisper -s small -p \"Transcribe este audio de una clase de informática, el nombre de la clase es métodos numéricos y es una clase introductoria\" --txt {audio_file}"
     
+    command_str = f"QT_QPA_PLATFORM=offscreen python -m buzz add -t transcribe -l es -m whisper -s large-v3-turbo -p \"Transcribe este audio de una clase de informática, el nombre de la clase es métodos numéricos y es una clase introductoria\" --txt {audio_file}"
+    print("Executing command:", command_str)
     # Execute directly as you would in terminal, with shell=True
     process = subprocess.Popen(
         command_str,
@@ -67,7 +36,7 @@ def run_buzz_command(audio_file):
     
     try:
         # Wait for the command to complete
-        stdout, stderr = process.communicate(timeout=1200)  # 20 minutes timeout
+        stdout, stderr = process.communicate(timeout=1800)  # 20 minutes timeout
         
         # Check if there's an output file that was created
         # You might need to add logic here to find and read the output file
@@ -87,3 +56,26 @@ def run_buzz_command(audio_file):
             "stderr": "Process timed out",
             "success": False
         }
+
+def STT(audio_file):
+    print("Starting transcription of", audio_file)
+    start_time = time.time()
+    
+    result = run_buzz_command(audio_file)
+    
+    end_time = time.time()
+    elapsed = end_time - start_time
+    
+    print(f"Process took {elapsed:.2f} seconds")
+    
+    if result["success"]:
+        print("Command executed successfully")
+        if result["stdout"]:
+            print("Output:", result["stdout"])
+        else:
+            print("No stdout output, check for output files")
+    else:
+        print("Command failed")
+        print("Error:", result["stderr"])
+    
+    return result
