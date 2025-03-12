@@ -21,8 +21,8 @@ def obtenerResumen(message):
     return completion.choices[0].message.content
 
 def run_buzz_command(audio_file):
-    
-    locate_buzz() #DEBUG: Saber que version de buzz se utiliza 
+    print("running buzz command")
+    locate_buzz() #DEBUG: Saber si es pip o snap
 
     command_str = f"QT_QPA_PLATFORM=offscreen python -m buzz add -t transcribe -l es -m whisper -s large-v3-turbo -p \"Transcribe este audio de una clase de informática, el nombre de la clase es métodos numéricos y es una clase introductoria\" --txt {audio_file}"
     print("Executing command:", command_str)
@@ -35,7 +35,7 @@ def run_buzz_command(audio_file):
         text=True,
         preexec_fn=os.setsid  # Use a new process group
     )
-    
+    print("corriendo...")
     try:
         # Wait for the command to complete
         stdout, stderr = process.communicate(timeout=1800)  # 20 minutes timeout
@@ -84,7 +84,7 @@ def STT(audio_file):
 
 
 def locate_buzz():
-    command_str = f"QT_QPA_PLATFORM=offscreen python -m buzz add -t transcribe -l es -m whisper -s large-v3-turbo -p \"Transcribe este audio de una clase de informática, el nombre de la clase es métodos numéricos y es una clase introductoria\" --txt {audio_file}"
+    command_str = f"which buzz"
     print("Executing command:", command_str)
     # Execute directly as you would in terminal, with shell=True
     process = subprocess.Popen(
