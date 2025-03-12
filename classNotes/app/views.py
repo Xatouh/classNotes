@@ -13,7 +13,7 @@ def Home(request):
     return render(request, "home/home.html")
 
 def UploadFile(request):
-    folder = "~/projects/classNotes/src/Github/classNotes/classnotes/app"
+    folder = "~/projects/classNotes/src/Github/classNotes/classnotes/app/"
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         file = request.FILES['file']
