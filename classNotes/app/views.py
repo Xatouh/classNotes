@@ -13,12 +13,13 @@ def Home(request):
     return render(request, "home/home.html")
 
 def UploadFile(request):
-    folder = "~/projects/classNotes/src/Github/classNotes/classnotes/app/input/"
+    folder = "~/projects/classNotes/src/Github/classNotes/classnotes/app"
     if request.method == "POST":
         form = UploadFileForm(request.POST, request.FILES)
         file = request.FILES['file']
         audio = AudioFile.objects.create(file=file)
         fileTitle = str(audio.file)
+        print(fileTitle)
         text = STT(folder + fileTitle) # procesarConIA()
         transcription = fileTitle + "_transcription"
         return HttpResponse(text['stderr'])
