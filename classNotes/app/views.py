@@ -19,8 +19,7 @@ def UploadFile(request):
         file = request.FILES['file']
         audio = AudioFile.objects.create(file=file)
         fileTitle = str(audio.file)
-        print(fileTitle)
-        text = STT(folder + fileTitle) # procesarConIA()
+        text = STT(fileTitle) # procesarConIA()
         transcription = fileTitle + "_transcription"
         return HttpResponse(text['stderr'])
     else:
