@@ -94,4 +94,4 @@ def locate_buzz():
         stderr=subprocess.PIPE,
         text=True,
     )
-    print(process["stdout"])
+    print(process)
