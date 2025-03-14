@@ -14,7 +14,7 @@ def obtenerResumen(message):
     model="gpt-4o-mini",
     store=True,
         messages=[
-        {"role":"developer","content":[{"type":"text","text":"Eres un experto informático y desarrollador de software, haz un resumen de la siguiente transcripción de una clase de informática:"}]},
+        {"role":"developer","content":[{"type":"text","text":"Eres un experto informático y desarrollador de software, con buen conocimiento de ingeniería de requisitos az un resumen de la siguiente transcripción de una clase de informática:"}]},
         {"role": "user", "content": message}
     ]
     )
@@ -24,7 +24,7 @@ def run_buzz_command(audio_file):
     print("running buzz command")
     locate_buzz() #DEBUG: Saber si es pip o snap
 
-    command_str = f"QT_QPA_PLATFORM=offscreen python -m buzz add -t transcribe -l es -m whisper -s large-v3-turbo -p \"Transcribe este audio de una clase de informática, el nombre de la clase es métodos numéricos y es una clase introductoria\" --txt {audio_file}"
+    command_str = f"QT_QPA_PLATFORM=offscreen python -m buzz add -t transcribe -l es -m whisper -s large-v3-turbo -p \"Transcribe este audio de una charla acerca de las necesidades de un proyecto en un hospital.\" --txt {audio_file}"
     print("Executing command:", command_str)
     
     process = subprocess.Popen(
