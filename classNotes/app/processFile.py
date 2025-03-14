@@ -38,7 +38,7 @@ def run_buzz_command(audio_file):
     print("corriendo...")
     try:
         # Wait for the command to complete
-        stdout, stderr = process.communicate(timeout=1800)  # 20 minutes timeout
+        stdout, stderr = process.communicate(timeout=180000)  # 20 minutes timeout
         
         # Check if there's an output file that was created
         # You might need to add logic here to find and read the output file
