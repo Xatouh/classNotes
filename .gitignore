@@ -2,5 +2,8 @@ classNotes/app/__pycache__/
 classNotes/classNotes/__pycache__/
 *.mp3
 *.m4a
+*.pyc
 classNotes/input/
 classNotes/output/
+classNotes/app/__pycache__/
+
