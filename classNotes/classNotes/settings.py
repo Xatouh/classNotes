@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$z(hrq662!xqk10ubyebat1@zp!$36&i0r7!fa1&54#5p8e%v1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1',"100.87.17.1"]
+ALLOWED_HOSTS = ['127.0.0.1',"100.87.17.1","https://xatoulenovo.tailee72e7.ts.net","xatoulenovo.tailee72e7.ts.net"]
 
 
 # Application definition
@@ -70,7 +70,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'classNotes.wsgi.application'
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://xatoulenovo.tailee72e7.ts.net',]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
