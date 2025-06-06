@@ -70,14 +70,14 @@ def STT(audio_path, preprocess=True):
             chunk = data[start_sample:end_sample]
 
             # Guardar temporalmente el segmento como WAV
-            with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as temp_file:
-                sf.write(temp_file.name, chunk, samplerate)
+            temp_path = f"temp_chunk_{i}.wav"
+            sf.write(temp_path, chunk, samplerate)
 
-                # Transcribir
-                result = model.transcribe(temp_file.name, language=LANGUAGE, fp16=USE_FP16 and device == "cuda")
-                transcription += result["text"].strip() + " "
+            # Transcribir
+            result = model.transcribe(temp_path, language=LANGUAGE, fp16=USE_FP16 and device == "cuda")
+            transcription += result["text"].strip() + " "
 
-                # El archivo temporal se elimina automáticamente al cerrar el contexto
+            os.remove(temp_path)  # Eliminar archivo temporal
 
 
         # Mostrar y guardar transcripción final
