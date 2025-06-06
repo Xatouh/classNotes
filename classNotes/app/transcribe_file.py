@@ -18,13 +18,14 @@ if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
 # Configuración
-MODEL_SIZE = "tiny"  # opciones: tiny, base, small, medium, large, large-v3
+m = "base"  # opciones: tiny, base, small, medium, large, large-v3
 USE_FP16 = True       # Usar precisión mixta si tienes GPU compatible (GTX 1650 lo soporta)
-LANGUAGE = "en"       # Cambiar a "en", "fr", etc. si es necesario
+l = "es"       # Cambiar a "en", "fr", etc. si es necesario
 
 
 
-def STT(audio_path, preprocess=True):
+def STT(audio_path, model, preprocess=True,  use_fp16=USE_FP16, language=l):
+    print("file:",audio_path,"modelo:", model,"preprocesado:", preprocess, "lenguaje:", language)
     if not os.path.exists(audio_path):
         print(f"❌ Archivo no encontrado: {audio_path}")
         return
@@ -43,8 +44,8 @@ def STT(audio_path, preprocess=True):
         print(f"🚀 Usando dispositivo: {device}")
 
         # Carga del modelo
-        model = whisper.load_model(MODEL_SIZE).to(device)
-        print(f"🎧 Modelo '{MODEL_SIZE}' cargado")
+        modelUsed = whisper.load_model(model).to(device)
+        print(f"🎧 Modelo '{model}' cargado")
 
 
         # Cargar audio completo para dividirlo
@@ -74,7 +75,7 @@ def STT(audio_path, preprocess=True):
             sf.write(temp_path, chunk, samplerate)
 
             # Transcribir
-            result = model.transcribe(temp_path, language=LANGUAGE, fp16=USE_FP16 and device == "cuda")
+            result = modelUsed.transcribe(temp_path, language=language, fp16=USE_FP16 and device == "cuda")
             transcription += result["text"].strip() + " "
 
             os.remove(temp_path)  # Eliminar archivo temporal

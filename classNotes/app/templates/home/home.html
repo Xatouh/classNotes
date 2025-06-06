@@ -12,8 +12,26 @@
         <p>
             {{ form.file }}
         </p>
+
+        <select name="language" id="language">
+            <option value="es">es</option>
+            <option value="en">en</option>
+        </select>
+
+        <select name="model" id="model">
+            <option value="tiny">tiny</option>
+            <option value="base">base</option>
+            <option value="small">small</option>
+            <option value="medium">medium</option>
+            <option value="large">large</option>
+            <option value="large-v3">large-v3</option>
+        </select>
+
+        <input type="checkbox" name="preprocess" id="preprocess" checked>
+        <label for="preprocess">Preprocesar</label>
+        
         <!-- <input type="file" placeholder="Subir Archivo"> -->
-        <p><input type="submit" value="Upload"/></p>
+        <p><input type="submit" value="Procesar Audio"/></p>
         
     </form>
     

@@ -20,12 +20,21 @@ def UploadFile(request):
         print("Uploading file...")
         form = UploadFileForm(request.POST, request.FILES)
         file = request.FILES['file']
+        model= request.POST['model']
+        preprocess = request.POST['preprocess'] == 'on'
+        language = request.POST['language']
 
+        print("file:",file,"modelo:", model,"preprocesado:", preprocess, "lenguage:", language)
         folder = "output/"+file.name.split(".")[0] + "/"
+        
 
-        audio = AudioFile.objects.create(file=file)
+        audio = AudioFile.objects.create(file=file, language=language, preprocess=preprocess, model=model)
         fileTitle = str(audio.file)
-        text = STT(fileTitle) # procesarConIA()
+        filePreprocess = str(audio.preprocess)
+        fileLanguage = str(audio.language)
+        fileModel = str(audio.model)
+        print("fileTitle:", fileTitle, "filePreprocess:", filePreprocess, "fileLanguage:", fileLanguage, "fileModel:", fileModel)
+        text = STT(fileTitle, preprocess=filePreprocess, model=fileModel, language=fileLanguage) # procesarConIA()
         save(folder + "transcripcion.txt", text)
         print("Transcripción completada.")
         summary = obtenerResumen(text)
