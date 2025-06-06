@@ -9,9 +9,7 @@
 <body>
     <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <p>
-            {{ form.file }}
-        </p>
+
 
         <select name="language" id="language">
             <option value="es">es</option>
@@ -29,8 +27,10 @@
 
         <input type="checkbox" name="preprocess" id="preprocess" checked>
         <label for="preprocess">Preprocesar</label>
-        
-        <!-- <input type="file" placeholder="Subir Archivo"> -->
+
+        <!-- Permitir múltiples archivos -->
+        <input type="file" name="files" id="files" multiple>
+
         <p><input type="submit" value="Procesar Audio"/></p>
         
     </form>
