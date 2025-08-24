@@ -3,8 +3,9 @@ from .forms import UploadFileForm
 from .transcribe_file import STT
 from .resumir import obtenerResumen
 from .utils import save
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from .models import AudioFile
+import time
 
 
 # Imaginary function to handle an uploaded file.
@@ -49,3 +50,5 @@ def UploadFile(request):
     else:
         form = UploadFileForm()
     return render(request, "home/home.html", {"form": form})
+
+
